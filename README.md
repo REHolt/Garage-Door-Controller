@@ -12,7 +12,7 @@ I can set a static IP on my network.
 I made modifications to this software to interface a couple of HALL-Effect Sensors (Part Number: A3144E) as Status indicators. 
 On the ESP8266 set pinmode(5, INPUT_PULLUP) (Status Open). and pinmode(12, INPUT_PULLUP) (Status Closed).
 
-Implemente SMS notification of Garage Door Status using IFTTT Maker Recipe. Code is set up to monitor the time the door is
+I also implemented SMS notification of Garage Door Status using IFTTT Maker Recipe (Thanks to help from "The Hammer Project"). Code is set up to monitor the time the door is
 open and send an SMS to my phone if it remains open for over an hour. 
 
 
