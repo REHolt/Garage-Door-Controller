@@ -19,4 +19,5 @@ connecting a USB cable. Since this is installed overhead in the garage, it will 
 I want to make changes. Also, I included "Host Name" programming for easy identification on the network.
 
 The Android App was writen using the MIT App Inventor available on-line at: http://ai2.appinventor.mit.edu/
-You will need to edit the Web URL under the Blocks section to replace "Your Device IP" with the actual IP address of your garage door device.
+You will need to import the .aia file above and edit the Web URL under the Blocks section to replace "Your Device IP" 
+with the actual IP address of your garage door device.
