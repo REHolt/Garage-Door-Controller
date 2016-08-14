@@ -9,7 +9,7 @@ but this would not work with Echo, as it is only able to send on/off commands. T
 the ESP8266 module, and will be printed to Serial when the module is connected. This helps me identify the device so
 I can set a static IP on my network.
 
-I made modifications to this software to interface a couple of HALL-Effect Sensor as Status indicators
+I made modifications to this software to interface a couple of HALL-Effect Sensors (Part Number: A3144E) as Status indicators
 On the ESP8266 set pinmode(5, INPUT_PULLUP) (Status Open). and pinmode(12, INPUT_PULLUP) (Status Closed)
 
 Implemente SMS notification of Garage Door Status using IFTTT Maker Recipe. Code is set up to monitor the time the door is
