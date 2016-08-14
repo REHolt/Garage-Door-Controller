@@ -1,5 +1,6 @@
 # Garage-Door
-ESP8266 Garage Door opener with Android App
+ESP8266 Garage Door opener with Android App.
+
 This is yet another Garage Door Opener using an ESP8266. It sets up a simple HTTP-like server that works with Fauxmo and Amazon Echo.
 It is a modification of the basic Switch code to toggle the GPIO High and then Low
 The server will set a GPIO pin which will be automatically reset after a short (500ms) pause
