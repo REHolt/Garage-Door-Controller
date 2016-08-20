@@ -1,7 +1,7 @@
 # Garage-Door
 ESP8266 Garage Door opener with Android App.
 
-Description
+##Description
 
 This is yet another Garage Door Opener using an ESP8266. It sets up a simple HTTP-like server that works with Fauxmo and Amazon Echo.
 It is a modification of the basic Switch code to toggle the GPIO High and then Low. The server will set a GPIO pin which will be automatically reset after a short (500ms) pause. Typing http://server_ip/gpio/1 into your browser will set GPIO4 High (1), and then set it back to Low (0) to release the garage door switch. 
@@ -13,12 +13,19 @@ I have included the "Over-The-Air (OTA) Update" code to allow for updating the E
 The Android App was written using the MIT App Inventor available on-line at: http://ai2.appinventor.mit.edu/
 You will need to import the .aia file above and edit the Web URL under the Blocks section to replace "Your Device IP" with the actual IP address of your garage door device.
 
-Parts List
+##Parts List
 
 •	(1) ESP8266  - Available from Amazon.com if you want it fast or from Alibaba.com if you want it cheap.
+
 •	(1) SPDT Relay Module
+
 •	(1) 2N2222A Transistor
+
 •	(1) 100K Resistor
+
 •	(2) A3144E Hall Effect Sensor
+
 •	Solderable breadboard
+
 •	Wire
+
