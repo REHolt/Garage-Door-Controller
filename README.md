@@ -30,5 +30,6 @@ You will need to import the .aia file above and edit the Web URL under the Block
 -	(2) A3144E Hall Effect Sensor - I found these on AliExpress 10 < $1.50 but they can be had at Amazon as well
 -	Solderable breadboard
 -	Wire
+-	(1) USB charger with cable - I used an old Phone charger, anything with ~.75 amp output will do
 
 
