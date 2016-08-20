@@ -1,28 +1,35 @@
 /*  This is the ESP8266 code that operates Cerberus the Garage door opener
+ *   
+ *  Note - In Arduino IDE set the "board" to "NodMCU 1.0 (ESP12E Module)"
+ *  
  *  This sketch sets up a simple HTTP-like server that works with Fauxmo and Amazon Echo.
- *  It is a modification of the basic Switch code to toggle the GPIO High and then Low
- *  The server will set a GPIO pin which will be automatically reset after a short (500ms) pause
- *  On the HiLetGo ESP8266 set pinmode(4,output)
- *  On the Chines ESP8266 labeled LoLin set pinmode(4, output), actual output will be on pin labeled D2
+ *  
+ *  It is a modification of the basic Switch code to toggle the GPIO High and then Low.  
+ *  The server will set a GPIO pin which will be automatically reset after a short (500ms) pause.
  *  http://server_ip/gpio/1 will set the GPIO4 High (1), and then set back to Low (0) to release the garage door switch
- *  ON previous iterations (Greta) the toggle function was accomplished in the Android Garage Door Software (Greta)
+ *  On the HiLetGo ESP8266 set pinmode(4,output)
+ *  
+ *  I just modified the code to include "Status" reporting. Typing  http://server_ip/Status into your browser
+ *  will return the status information from the HALL Effect sensors. This helps in the installation debug. 
+ *  Now you can check the alignment of the Magnets with the sensors. I will try to implement this into the 
+ *  Android APP as a status button. This will let me check if I closed the door.
+ *  
+ *  On the Chines ESP8266 labeled LoLin set pinmode(4, output), actual output will be on pin labeled D2 
+ *  In previous iterations (Greta) the toggle function was accomplished in the Android Garage Door Software (Greta)
  *  but this would not work with Echo, as it is only able to send on/off commands. The Server_ip is the IP address of 
- *  the ESP8266 module, and will be printed to Serial when the module is connected. This helps me identify the device so
- *  I can set a static IP on my network.
-*/
-
-/* I made modifications to this software to interface a couple of HALL-Effect Sensor as a Status indicators
- * On the Chinese ESP8266 labeled Lolin set pinmode(5, INPUT_PULLUP). Actual input will be on pin labeled D1 (Status OPen)
- * and pinmode(12, INPUT_PULLUP), Actual input will be on pin labeled D6 (Status Closed)
-*/
-
-/* Implemente SMS notification of Garage Door Status using IFTTT Maker Recipe. Code is set up to monitor the time the door is
+ *  the ESP8266 module, and will be printed to Serial when the module is connected. I included "Host Name" programming, 
+ *  this helps me identify the device so I can set a static IP on my network.
+ *  
+ *  I made modifications to this software to interface a couple of HALL-Effect Sensors (Part Number: A3144E) as Status indicators
+ *  On the Chinese ESP8266 labeled Lolin set pinmode(5, INPUT_PULLUP). Actual input will be on pin labeled D1 (Status OPen)
+ *  and pinmode(12, INPUT_PULLUP), Actual input will be on pin labeled D6 (Status Closed)
+ *  
+ *  I Implemente SMS notification of Garage Door Status using IFTTT Maker Recipe. Code is set up to monitor the time the door is
  *  open and send an SMS to my phone if it remains open for over an hour. 
- */
-
-/* I have included the _Over-The-Air(OTA) Update" code to allow for updating the ESP8266 without 
- * connecting a USB cable. Since this is installed overhead in the garage, it will be more conveinient when 
- * I want to make changes. Also, I included "Host Name" programming for easy identification on the network.
+ *  
+ *  I have included the _Over-The-Air(OTA) Update" code to allow for updating the ESP8266 without 
+ *  connecting a USB cable. Since this is installed overhead in the garage, it will be more conveinient when 
+ *  I want to make changes. 
 */
 
 #include <SimpleTimer.h>
@@ -35,7 +42,7 @@
 extern "C" {
 #include "user_interface.h"
 }
-#include "Keys.h"
+#include "Keys.h"  //includes the wifi credentials and IFTTT URL
 
 #ifdef DEBUG_ESP_PORT
 #define DEBUG_MSG(...) DEBUG_ESP_PORT.printf( __VA_ARGS__ )
@@ -43,22 +50,18 @@ extern "C" {
 #define DEBUG_MSG(...)
 #endif
 
-//Home Network
-const char* ssid = "SSIDXXX";
-const char* password = "PasswordXXX";
-
 // Hostname defaults to esp8266-[ChipID]
-char HostName[] = "Garage Door";
 
 //Garage Door Status variables
 int Status_Open;
 int Status_Closed;
 int On_Status;
 String Door_Status = "Unknown";
+int val;
 
 //Interrupt Definition
-const byte interrupt1 = 5;
-const byte interrupt2 = 12;
+const byte interrupt1 = 12;
+const byte interrupt2 = 5;
 volatile byte state = LOW;
 
 //Garage Door Open Timer setup
@@ -78,7 +81,7 @@ WiFiServer server(80);
 void setup() {
 
 // Hostname defaults to esp8266-[ChipID]
-wifi_station_set_hostname(HostName);
+wifi_station_set_hostname(Host_Name);
 
 Serial.begin(115200);
 delay(10);
@@ -104,9 +107,10 @@ attachInterrupt(digitalPinToInterrupt(interrupt2), Status, CHANGE);
 Serial.println();
 Serial.println();
 Serial.print("Connecting to ");
-Serial.println(ssid);
+Serial.println(Host_Name);
 
-WiFi.begin(ssid, password);
+  WiFi.begin(wifiCreds[0], wifiCreds[1]);
+
 
 while (WiFi.status() != WL_CONNECTED) {
 delay(500);
@@ -131,7 +135,7 @@ Serial.println(WiFi.hostname());
 // ArduinoOTA.setPort(8266);
 
 // Hostname defaults to esp8266-[ChipID]
-ArduinoOTA.setHostname(HostName);
+ArduinoOTA.setHostname("wifiCreds(2)");
 
 // No authentication by default
 //ArduinoOTA.setPassword((const char *)"1234");
@@ -169,14 +173,14 @@ if (Door_Status = "Unknown") Status();
 timer.setInterval(5000, checkOpen);
 }
 /*------------------------------------------------------------
-Interrupt Service Routine for Garage Door Status
-The routine is set-up to read two HALL-Effect sensors
-One (Status_Open) is triggered when the door is all the way open
-The second one is triggered when the door is all the way closed
-If they are both reading "Low" then there is a sensor error,
-since they are pulled up to 3.3volts and are pulled low when the magenet
-is present. The second one is probably over-kill, but it gives an indiction if the door
-is only partially open
+* Interrupt Service Routine for Garage Door Status
+* The routine is set-up to read two HALL-Effect sensors
+* One (Status_Open) is triggered when the door is all the way open
+* The second (Status_Closed) one is triggered when the door is all the way closed
+* If they are both reading "Low" then there is a sensor error,
+* since they are pulled up to 3.3volts and are pulled low when the magenet
+* is present. The second one is probably over-kill, but it gives an indiction if the door
+* is only partially open
 */
 
 void Status() {
@@ -207,7 +211,7 @@ Door_Status = "Closed";
 }
 break;
 case 1: {
-Door_Status = "Partially Open";
+Door_Status = "Open";
 }
 break;
 }
@@ -215,9 +219,9 @@ break;
 }
 }
 
-//------------------------------------------------------------
-/*Door Monitoring and SMS message routines
-* 
+/*------------------------------------------------------------
+ * Door Monitoring and SMS message routines
+ *  
 */
 void resetDoorOpenCounter() {
 doorOpenDurationInSeconds = 0;
@@ -253,6 +257,7 @@ messageSentInThisOpening = true;
 }
 }
 
+
 //--------------------------------------------------------------
 void loop() {
 timer.run();
@@ -277,26 +282,25 @@ client.flush();
 
 // Match the request
 int val;
-if (req.indexOf("/gpio/1") != -1)
+if (req.indexOf("/gpio/1") != -1){
 val = 1;
-// else if (req.indexOf("/gpio/0") != -1)
-// val = 0;
+digitalWrite(4, val);
+delay (500);
+val = 0;
+digitalWrite(4, val);
+client.flush();}
+else if (req.indexOf("/Status") != -1)
+val = 0;
 else {
+val=0;
 Serial.println("invalid request");
 client.stop();
 return;
 }
 
-// Set GPIO4 according to the request
-digitalWrite(4, val);
-delay (500);
-val = 0;
-digitalWrite(4, val);
-client.flush();
-
 // Prepare the response
 String s = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n\r\n<html>\r\nGPIO is now ";
-s += (val) ? "high" : "low";
+s += (Door_Status);
 s += "</html>\n";
 
 // Send the response to the client
