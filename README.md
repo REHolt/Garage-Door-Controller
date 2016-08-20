@@ -7,7 +7,7 @@ This is yet another Garage Door Opener using an ESP8266. It sets up a simple HTT
 
 It is a modification of the basic Switch code to toggle the GPIO High and then Low. The server will set a GPIO pin which will be automatically reset after a short (500ms) pause. Typing http://server_ip/gpio/1 into your browser will set GPIO4 High (1), and then set it back to Low (0) to release the garage door switch. 
 
-The lastest update includes Status Reporting. Typing http://server_ip/Status into your browser will return the status of the Garage Door based on the HALL Effect Sensors. This helps with installation debug by lettign you see if the magnets are aligned correctly. I plan to update the Android App as well so that you can check if you left the door open. 
+The lastest update includes Status Reporting. Typing http://server_ip/Status into your browser will return the status of the Garage Door based on the HALL Effect Sensors. This helps in the installation debug. Now you can check the alignment of the Magnets with the sensors. I plan to update the Android App as well so that you can check if you left the door open. 
 
 In previous iterations the toggle function was accomplished in the Android Garage Door Software, but this would not work with Echo, as it is only able to send on/off commands. 
 
