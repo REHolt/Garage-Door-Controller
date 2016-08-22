@@ -15,7 +15,7 @@ The “Server_ip” is the IP address of the ESP8266 module, and will be printed
 
 I made modifications to this software to interface a couple of HALL-Effect Sensors (Part Number: A3144E) as Status indicators. On the ESP8266 set pinmode(5, INPUT_PULLUP) (Status Open), and pinmode(12, INPUT_PULLUP) (Status Closed).
 
-I also implemented SMS notification of Garage Door Status using IFTTT Maker Recipe (Thanks to help from "The Hammer Project" http://hammerproject.com/post/130804023369/iot-intro-sms-me-when-i-leave-my-garage-door-open).  The Code is set up to monitor the time the door is open and send an SMS to my phone if it remains open for over an hour. 
+I also implemented SMS notification of Garage Door Status using IFTTT Maker Recipe (Thanks to help from "The Hammer Project" http://hammerproject.com/post/130804023369/iot-intro-sms-me-when-i-leave-my-garage-door-open).  The Code is set up to monitor the time the door is open and send an SMS to my phone if it remains open for over an hour. This works even if you are not home, so you know if you left the door open, or if someone has opened your garage. 
 
 I have included the "Over-The-Air (OTA) Update" code to allow for updating the ESP8266 without connecting a USB cable. Since this is installed overhead in the garage, it will be more convenient when I want to make changes. 
 
