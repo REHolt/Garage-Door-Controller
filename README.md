@@ -25,8 +25,8 @@ You will need to import the .aia file above and edit the Web URL under the Block
 
 ##Parts List
 
--	(1) ESP8266  - Available from Amazon.com if you want it fast or from Alibaba.com if you want it cheap
--	(1) SPDT Relay Module - I found mine on ebay for $1.08 ea.
+-	(1) NodeMCU ESP8266  - Available from Amazon.com if you want it fast or from Alibaba.com if you want it cheap
+-	(1) SPDT +5v Relay Module - I found mine on ebay for $1.08 ea.
 -	(1) 2N2222A Transistor - The "A" is the metal can veriety, it helps with heat disipation
 -	(1) 100K Resistor - 1/4 or 1/8 watt will do, not much current here
 -	(2) A3144E Hall Effect Sensor - I found these on AliExpress 10 < $1.50 but they can be had at Amazon as well
