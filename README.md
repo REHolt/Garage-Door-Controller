@@ -3,7 +3,7 @@ ESP8266 Garage Door opener with Android App.
 
 ##Description
 
-This is yet another Garage Door Opener using an ESP8266. It sets up a simple HTTP-like server that works with Fauxmo and Amazon Echo.
+This is yet another Garage Door Opener using an ESP8266. It sets up a simple HTTP-like server that works with Fauxmo, Amazon Echo and the supplied Android App.
 
 It is a modification of the basic Switch code to toggle the GPIO High and then Low. The server will set a GPIO pin which will be automatically reset after a short (500ms) pause. Typing http://server_ip/gpio/1 into your browser will set GPIO4 High (1), and then set it back to Low (0) to release the garage door switch. 
 
@@ -19,7 +19,7 @@ I also implemented SMS notification of Garage Door Status using IFTTT Maker Reci
 
 I have included the "Over-The-Air (OTA) Update" code to allow for updating the ESP8266 without connecting a USB cable. Since this is installed overhead in the garage, it will be more convenient when I want to make changes. 
 
-The Android App was written using the MIT App Inventor available on-line at: http://ai2.appinventor.mit.edu/; It provides the basic function of a garage door remote. You will need to be connected to your Home wifi, but if your house is like mine, my phone connects to the wifi when i pull up into the driveway. The latest version of the APP will provide Status Reporting of the door state as well. It works good for me on those days when I have been working in the garage, I can check just before I go to bed to make sure it is closed. The SMS message can do this as well, but if I am working out there I may ignore the message, so this way i can be sure.
+The Android App was written using the MIT App Inventor available on-line at: http://ai2.appinventor.mit.edu/; It provides the basic function of a garage door remote. You will need to be connected to your Home wifi, but if your house is like mine, my phone connects to the wifi when I pull up into the driveway. The latest version of the APP will provide Status Reporting of the door state as well. It works good for me on those days when I have been working in the garage, I can check just before I go to bed to make sure it is closed. The SMS message can do this as well, but if I am working out there I may ignore the message, so this way I can be sure.
 
 You will need to import the .aia file above and edit the Web URL under the Blocks section to replace "Your Device IP" with the actual IP address of your garage door device.
 
