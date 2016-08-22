@@ -107,9 +107,10 @@ attachInterrupt(digitalPinToInterrupt(interrupt2), Status, CHANGE);
 Serial.println();
 Serial.println();
 Serial.print("Connecting to ");
+Serial.println(wifiCreds[0]);
 Serial.println(Host_Name);
 
-  WiFi.begin(wifiCreds[0], wifiCreds[1]);
+WiFi.begin(wifiCreds[0], wifiCreds[1]);
 
 
 while (WiFi.status() != WL_CONNECTED) {
@@ -135,7 +136,7 @@ Serial.println(WiFi.hostname());
 // ArduinoOTA.setPort(8266);
 
 // Hostname defaults to esp8266-[ChipID]
-ArduinoOTA.setHostname("wifiCreds(2)");
+ArduinoOTA.setHostname(Host_Name);
 
 // No authentication by default
 //ArduinoOTA.setPassword((const char *)"1234");
@@ -211,7 +212,7 @@ Door_Status = "Closed";
 }
 break;
 case 1: {
-Door_Status = "Open";
+Door_Status = "Partially Open";
 }
 break;
 }
@@ -289,8 +290,9 @@ delay (500);
 val = 0;
 digitalWrite(4, val);
 client.flush();}
-else if (req.indexOf("/Status") != -1)
+else if (req.indexOf("/Status") != -1){
 val = 0;
+client.flush();}
 else {
 val=0;
 Serial.println("invalid request");
@@ -299,7 +301,7 @@ return;
 }
 
 // Prepare the response
-String s = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n\r\n<html>\r\nGPIO is now ";
+String s = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n\r\n<html>\r\nGarage Door is now: ";
 s += (Door_Status);
 s += "</html>\n";
 
